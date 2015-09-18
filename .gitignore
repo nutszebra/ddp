@@ -59,6 +59,7 @@ target/
 #neural net model
 bvlc_alexnet.caffemodel
 ilsvrc_2012_mean.npy
+bvlc_googlenet.caffemodel
 
 #test picture
 test*
