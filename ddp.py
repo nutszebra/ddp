@@ -4,6 +4,7 @@ from __future__ import print_function
 import argparse
 import os, sys, re
 import random
+from time import time
 
 import cv2
 import numpy as np
@@ -20,8 +21,11 @@ parser.add_argument('--gpu',  default=-1, help='The argument is number of gpu. -
 args = parser.parse_args()
 
 #use alexnet
+print('alexnet is being loaded!')
+timeMemory = time()
 func = caffe.CaffeFunction("bvlc_alexnet.caffemodel")
-print('Loaded', file=sys.stderr)
+print('alexnet was loaded!')
+print('It took ' + str(int(time() - timeMemory)) + " secondes")
 if args.gpu >= 0:
   cuda.init(args.gpu)
   func.to_gpu()
@@ -45,11 +49,17 @@ output_side_length=256
 #search pictures
 picturePath = [picture for picture in os.listdir(args.image)
                if re.findall(r"\.png$|\.jpg$|\.JPG$|\.PNG$|\.JPEG$",picture)]
+print("you have totally " + str(len(picturePath)) + " pictures in " + args.image)
 answer = {}
+count = 1
 
 for picture in picturePath:
+  timeMemory = time()
+  print('Number of pictures: ' + str(count))
+  count = count + 1
+  print('extracting neural code of ' + args.image + "/" + picture)
   #load image file
-  image = cv2.imread(picture)
+  image = cv2.imread(args.image + "/" + picture)
   #resize and crop
   height, width, depth = image.shape
   new_height = output_side_length
@@ -79,3 +89,4 @@ for picture in picturePath:
   #get neural code
   x = chainer.Variable(x_batch, volatile=True)
   answer[picture] = neuralCode(x)
+  print('It took ' + str(int(time() - timeMemory)) + " secondes")
