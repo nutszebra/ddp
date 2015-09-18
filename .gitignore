@@ -61,4 +61,4 @@ bvlc_alexnet.caffemodel
 ilsvrc_2012_mean.npy
 
 #test picture
-test
+test*
