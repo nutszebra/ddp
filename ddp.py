@@ -52,30 +52,35 @@ def calcResult(answer, threshold):
   #precision = tp / (tp + fp)
   #recall = tp / (tp + fn)
   for key in answer:
+    print(key.split('/')[-1])
     duplicate = []
     for keykey in answer:
       if key == keykey:
         pass
       else:
-        distance = answer[key].dot(answer[keykey])/(np.linalg.norm(answer[key])*np.linalg.nor(answer[keykey]))
+        distance = answer[key].dot(answer[keykey])/(np.linalg.norm(answer[key])*np.linalg.norm(answer[keykey]))
         if distance >= threshold and key.split('/')[-1] == keykey.split('/')[-1]:
           tp = tp + 1
         elif distance >= threshold and key.split('/')[-1] != keykey.split('/')[-1]:
           tn = tn + 1
-          item["tnFile"].append = {key: keykey}
+          item["tnFile"].append({key: keykey})
         elif distance <= threshold and key.split('/')[-1] != keykey.split('/')[-1]:
           fn = fn + 1
         elif distance <= threshold and key.split('/')[-1] == keykey.split('/')[-1]:
           fp = fp + 1
-          item["fpFile"].append = {key: keykey}
-    item["tp"] = tp
-    item["fp"] = tp
-    item["tn"] = tp
-    item["fn"] = tp
-    item["recall"] = tp / (tp + fn)
-    item["precision"] = tp / (tp + fp)
-    return item
-          
+          item["fpFile"].append({key: keykey})
+  item["tp"] = tp
+  item["fp"] = fp
+  item["tn"] = tn
+  item["fn"] = fn
+ # if (tp + fn) != 0:
+#    item["recall"] = tp / (tp + fn)
+#    item["precision"] = tp / (tp + fp)
+ # else:
+#    item["recall"] = "Inf"
+#    item["precision"] = "Inf"
+  return item
+
 
 cropwidth = 256 - in_size
 start = cropwidth // 2
@@ -91,7 +96,7 @@ for folderPath in args.image:
   print("you have totally " + str(len(picturePath)) + " pictures in " + folderPath)
   answer = {}
   count = 1
-  
+
   for picture in picturePath:
     timeMemory = time()
     print('Number of pictures: ' + str(count))
@@ -112,19 +117,19 @@ for folderPath in args.image:
     width_offset = (new_width - output_side_length) / 2
     image= resized_img[height_offset:height_offset + output_side_length,
                        width_offset:width_offset + output_side_length]
-    
+
     #subtract mean image
     image = image.transpose(2, 0, 1)
     image = image[:, start:stop, start:stop].astype(np.float32)
     image -= mean_image
-    
+
     x_batch = np.ndarray(
         (1, 3, in_size,in_size), dtype=np.float32)
     x_batch[0]=image
-    
+
     if args.gpu >= 0:
         x_batch=cuda.to_gpu(x_batch)
-    
+
     #get neural code
     x = chainer.Variable(x_batch, volatile=True)
     answer[folderPath + "/" +  picture] = neuralCode(x)
