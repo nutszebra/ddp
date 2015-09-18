@@ -55,3 +55,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#neural net model
+bvlc_alexnet.caffemodel
+ilsvrc_2012_mean.npy
