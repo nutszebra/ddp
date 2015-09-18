@@ -1,0 +1,2 @@
+# ddp
+detect duplicate pictures
