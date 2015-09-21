@@ -58,11 +58,11 @@ def getNeuralCode(directory, layer="fc6", gpu = -1):
   
   print("you have totally" + str(numPic) + " pictures")
   answer = {}
+  count = 1
   for folderPath in directory:
     #search pictures
     picturePath = [picture for picture in os.listdir(folderPath)
                    if re.findall(r"\.png$|\.jpg$|\.JPG$|\.PNG$|\.JPEG$",picture)]
-    count = 1
   
     for picture in picturePath:
       timeMemory = time()
