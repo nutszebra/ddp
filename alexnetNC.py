@@ -58,7 +58,7 @@ def getNeuralCode(directory, layer="fc6", gpu = -1):
   
   print("you have totally" + str(numPic) + " pictures")
   answer = {}
-  count = 1
+  count = 0
   for folderPath in directory:
     #search pictures
     picturePath = [picture for picture in os.listdir(folderPath)
