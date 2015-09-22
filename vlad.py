@@ -5,6 +5,7 @@ import os
 import numpy as np
 import Pycluster as pc
 from time import time
+from scipy.cluster.vq import kmeans2
 
 """
  <unblockshaped>
@@ -24,10 +25,14 @@ def unblockshaped(arr, h, w):
           .swapaxes(1,2)
           .reshape(h, w))
 
-def kMeans(arr, k, numberToTry = 20):
+def kMeansByPycluster(arr, k, numberToTry=20):
   clusterid, error, nfound = pc.kcluster(arr, nclusters=k, transpose=0,
                                        npass=numberToTry, method='a', dist='e')
   centroids, _ = pc.clustercentroids(arr, clusterid=clusterid)
+  return [centroids, clusterid]
+
+def kMeansByScipy(arr, k, threshold=1.0e-05):
+  centroids, clusterid = kmeans2(arr, k=k, thresh=threshold, minit='points')
   return [centroids, clusterid]
 
 def normalizeArray(arr):
@@ -39,7 +44,7 @@ def normalizeArray(arr):
       answer = np.vstack([answer, arr[i] / np.linalg.norm(arr[i])])
   return answer
 
-def vlad(dic, k, structure=(14*14,512), numberToTry=20):
+def vlad(dic, k, structure=(14*14,512), numberToTry=20, how="scipy", threshold=1.0e-05):
   keys = []
   newDic = {}
   flag = False
@@ -58,7 +63,10 @@ def vlad(dic, k, structure=(14*14,512), numberToTry=20):
   print("start k-means")
   timeMemory = time()
   #execute kMeans
-  result = kMeans(dicForkmeans, k, numberToTry)
+  if how=="scipy":
+    result = kMeansByScipy(dicForkmeans, k, threshold=threshold)
+  else:
+    result = kMeansByPycluster(dicForkmeans, k, numberToTry=numberToTry)
   print("finish k-means")
   print('It took ' + str(int(time() - timeMemory)) + " secondes")
   count = 0
@@ -68,7 +76,7 @@ def vlad(dic, k, structure=(14*14,512), numberToTry=20):
   for clusterid in result[1]:
     key = keys[count]
     if not answer.has_key(key):
-      answer[key] = np.zero((k,structure(1)))
+      answer[key] = np.zeros((k,structure(1)))
     answer[key][clusterid] = answer[key][clusterid] + (dic[key][increment] - result[0][clusterid])
     increment = increment + 1
     if increment >= structure(0):
