@@ -60,6 +60,7 @@ target/
 bvlc_alexnet.caffemodel
 ilsvrc_2012_mean.npy
 bvlc_googlenet.caffemodel
+illust2vec_ver200.caffemodel
 
 #test picture
 test*
