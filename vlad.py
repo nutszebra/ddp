@@ -44,7 +44,26 @@ def normalizeArray(arr):
       answer = np.vstack([answer, arr[i] / np.linalg.norm(arr[i])])
   return answer
 
-def vlad(dic, k, structure=(14*14,512), numberToTry=20, how="scipy", threshold=1.0e-05):
+def intraVlad(dic):
+  answer = {}
+  for key in dic:
+    tmp = []
+    for arr in dic[key]:
+      if np.linalg.norm(arr)==0.0:
+        if len(tmp)!=0:
+          tmp=np.vstack((tmp,arr))
+        else:
+          tmp=np.array(arr)
+      else:
+        if len(tmp)!=0:
+          tmp=np.vstack((tmp,arr/np.linalg.norm(arr)))
+        else:
+          tmp=np.array(arr/np.linalg.norm(arr))
+    answer[key] = tmp
+  return answer
+  
+
+def rawVlad(dic, k, structure=(14*14,512), numberToTry=20, how="scipy", threshold=1.0e-05):
   keys = []
   newDic = {}
   flag = False
