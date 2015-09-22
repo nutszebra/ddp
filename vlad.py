@@ -44,6 +44,9 @@ def normalizeArray(arr):
       answer = np.vstack([answer, arr[i] / np.linalg.norm(arr[i])])
   return answer
 
+def calcDeg(arr1,arr2):
+  return np.arccos(arr1.dot(arr2) / (np.linalg.norm(arr1) * np.linalg.norm(arr2)))
+
 def intraVlad(dic):
   answer = {}
   for key in dic:
@@ -97,6 +100,47 @@ def rawVlad(dic, k, structure=(14*14,512), numberToTry=20, how="scipy", threshol
     if not answer.has_key(key):
       answer[key] = np.zeros((k,structure[1]))
     answer[key][clusterid] = answer[key][clusterid] + (newDic[key][increment] - result[0][clusterid])
+    increment = increment + 1
+    if increment >= structure[0]:
+      count = count + 1
+      increment = 0
+  return answer
+
+def rawgVlad(dic, k, structure=(14*14,512), numberToTry=20, how="scipy", threshold=1.0e-05):
+  keys = []
+  newDic = {}
+  flag = False
+  for key in dic:
+    newDic[key] = unblockshaped(dic[key].T, structure[0], structure[1])
+    if flag == True:
+      dicForkmeans = np.vstack((dicForkmeans,newDic[key]))
+    else:
+      dicForkmeans = np.array(newDic[key])
+      flag = True
+    keys.append(key)
+  print("k: " + str(k))
+  print("number of pictures: " + str(len(dic)))
+  print("vector structure for each picture: " + str(structure))
+  print("number of vectores for k-means: " + str(len(dicForkmeans)))
+  print("start k-means")
+  timeMemory = time()
+  #execute kMeans
+  if how=="scipy":
+    result = kMeansByScipy(dicForkmeans, k, threshold=threshold)
+  else:
+    result = kMeansByPycluster(dicForkmeans, k, numberToTry=numberToTry)
+  print("finish k-means")
+  print('It took ' + str(int(time() - timeMemory)) + " secondes")
+  count = 0
+  increment = 0
+  #store vlad here
+  answer = {}
+  for clusterid in result[1]:
+    key = keys[count]
+    if not answer.has_key(key):
+      answer[key] = np.zeros((k,structure[1]))
+    deg = calcDeg(newDic[key][increment],  result[0][clusterid])
+    answer[key][clusterid] = answer[key][clusterid] + (newDic[key][increment]**deg - result[0][clusterid])
     increment = increment + 1
     if increment >= structure[0]:
       count = count + 1
