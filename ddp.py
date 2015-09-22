@@ -140,8 +140,8 @@ print(args.image)
 if args.model =="alexnet":
   if args.layer == "default":
     args.layer = "fc6"
-  alexnetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
+  answer = alexnetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
 elif args.model =="googlenet":
   if args.layer == "default":
     args.layer = "inception_4a/output"
-  googlenetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
+  answer = googlenetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
