@@ -76,10 +76,10 @@ def vlad(dic, k, structure=(14*14,512), numberToTry=20, how="scipy", threshold=1
   for clusterid in result[1]:
     key = keys[count]
     if not answer.has_key(key):
-      answer[key] = np.zeros((k,structure(1)))
+      answer[key] = np.zeros((k,structure[1]))
     answer[key][clusterid] = answer[key][clusterid] + (dic[key][increment] - result[0][clusterid])
     increment = increment + 1
-    if increment >= structure(0):
+    if increment >= structure[0]:
       count = count + 1
       increment = 0
   return answer
