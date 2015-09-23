@@ -100,3 +100,30 @@ def getNeuralCode(directory, layer="fc6", gpu = -1):
       sen = overwrite.bar(count,numPic)
       overwrite.overwrite(sen)
   return answer
+
+"""
+  newroke structure:
+  [(u'conv1', [u'data'], [u'conv1']),
+  (u'relu1', [u'conv1'], [u'conv1']),
+  (u'norm1', [u'conv1'], [u'norm1']),
+  (u'pool1', [u'norm1'], [u'pool1']),
+  (u'conv2', [u'pool1'], [u'conv2']),
+  (u'relu2', [u'conv2'], [u'conv2']),
+  (u'norm2', [u'conv2'], [u'norm2']),
+  (u'pool2', [u'norm2'], [u'pool2']),
+  (u'conv3', [u'pool2'], [u'conv3']),
+  (u'relu3', [u'conv3'], [u'conv3']),
+  (u'conv4', [u'conv3'], [u'conv4']),
+  (u'relu4', [u'conv4'], [u'conv4']),
+  (u'conv5', [u'conv4'], [u'conv5']),
+  (u'relu5', [u'conv5'], [u'conv5']),
+  (u'pool5', [u'conv5'], [u'pool5']),
+  (u'fc6', [u'pool5'], [u'fc6']),
+  (u'relu6', [u'fc6'], [u'fc6']),
+  (u'drop6', [u'fc6'], [u'fc6']),
+  (u'fc7', [u'fc6'], [u'fc7']),
+  (u'relu7', [u'fc7'], [u'fc7']),
+  (u'drop7', [u'fc7'], [u'fc7']),
+  (u'fc8', [u'fc7'], [u'fc8']),
+  (u'loss', [u'fc8', u'label'], [])]
+"""
