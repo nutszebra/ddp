@@ -61,6 +61,7 @@ bvlc_alexnet.caffemodel
 ilsvrc_2012_mean.npy
 bvlc_googlenet.caffemodel
 illust2vec_ver200.caffemodel
+illust2vec_image_mean.npy
 
 #test picture
 test*
