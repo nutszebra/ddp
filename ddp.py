@@ -15,6 +15,7 @@ import chainer.functions as F
 from chainer.functions import caffe
 import alexnetNC
 import googlenetNC
+import illust2vecNC
 
 parser = argparse.ArgumentParser(
     description='detect duplicate pictures')
@@ -145,3 +146,7 @@ elif args.model =="googlenet":
   if args.layer == "default":
     args.layer = "inception_4a/output"
   answer = googlenetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
+elif args.model =="illust2vec":
+  if args.layer == "default":
+    args.layer = "relu6_3"
+  answer = illust2vecNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
