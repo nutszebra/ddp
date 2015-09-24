@@ -236,7 +236,7 @@ def initRandomly(arr, k):
   return random.sample(xrange(len(arr)),k)
 
 def kmeansForManifold(arr, k, distance, calcCenter, iteration=10):
-  arr = infToSmallNum(arr)
+  arr = np.array([infToSmallNum(row) for row in arr],dtype="float")
   centroid = arr[initRandomly(arr,k)]
   for i in xrange(iteration):
     timeMemory = time()
