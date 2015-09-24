@@ -257,7 +257,7 @@ def rawrVlad(dic, k, structure=(14*14,512), iteration=20):
   newDic = {}
   flag = False
   for key in dic:
-    newDic[key] = infToSmallNum(unblockshaped(dic[key].T, structure[0], structure[1]))
+    newDic[key] = unblockshaped(dic[key].T, structure[0], structure[1])
     index = np.isclose(1.0e-15, newDic[key])
     newDic[key][index] = 1.0e-15
     if flag == True:
