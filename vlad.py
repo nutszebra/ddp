@@ -244,8 +244,15 @@ def initRandomly(arr, k):
 def kmeansForManifold(arr, k, distance, calcCenter, iteration=10):
   centroid = arr[initRandomly(arr,k)]
   for i in xrange(iteration):
+    timeMemory = time()
+    print("try: " + str(i))
+    etimeMemory = time()
     centroidId = eStep(arr, centroid, distance)
+    print('It took ' + str(int(time() - etimeMemory)) + " secondes for eStep")
+    mtimeMemory = time()
     centroid = mStep(arr, centroidId, calcCenter, k)
+    print('It took ' + str(int(time() - mtimeMemory)) + " secondes for mStep")
+    print('It took ' + str(int(time() - timeMemory)) + " secondes for one try")
   centroidId = eStep(arr, centroid, distance)
   return [centroid, centroidId]
 
