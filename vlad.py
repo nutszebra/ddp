@@ -210,6 +210,7 @@ def mStepGeodesicOnSPD(vec, centroidId, k):
     for i in enumerate(centroidId):
       p[i[1]] = p[i[1]] + 1.0 / vec[i[0]]
       q[i[1]] = q[i[1]] + vec[i[0]]
+  p = [infToSmallNum(row) for row in p]
   for i in xrange(len(p)):
     answer[i] = calcMeanOnSPD(p[i],q[i])
   return answer
