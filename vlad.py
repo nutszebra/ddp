@@ -257,7 +257,7 @@ def rawrVlad(dic, k, structure=(14*14,512), iteration=20):
   newDic = {}
   flag = False
   for key in dic:
-    newDic[key] = unblockshaped(dic[key].T, structure[0], structure[1])
+    newDic[key] = infToSmallNum(unblockshaped(dic[key].T, structure[0], structure[1]))
     if flag == True:
       dicForkmeans = np.vstack((dicForkmeans,newDic[key]))
     else:
@@ -271,7 +271,8 @@ def rawrVlad(dic, k, structure=(14*14,512), iteration=20):
   print("start k-means")
   timeMemory = time()
   #execute kMeans
-  result = kmeansForManifold(dicForkmeans,k,eStepGeodesicOnSPD,mStepGeodesicOnSPD,iteration=20)
+  result = kmeansForManifold(dicForkmeans,k,eStepGeodesicOnSPD,mStepGeodesicOnSPD,iteration=iteration)
+  result[0] = [infToSmallNum(row) for row in result[0]]
   print("finish k-means")
   print('It took ' + str(int(time() - timeMemory)) + " secondes")
   count = 0
