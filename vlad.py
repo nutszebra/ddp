@@ -245,7 +245,7 @@ def kmeansForManifold(arr, k, distance, calcCenter, iteration=10):
     centroidId = eStep(arr, centroid, distance)
     print('It took ' + str(int(time() - etimeMemory)) + " secondes for eStep")
     mtimeMemory = time()
-    centroid = infToSmallNum(mStep(arr, centroidId, calcCenter, k))
+    centroid = np.array([infToSmallNum(row) for row in mStep(arr, centroidId, calcCenter, k)], dtype="float")
     print('It took ' + str(int(time() - mtimeMemory)) + " secondes for mStep")
     print('It took ' + str(int(time() - timeMemory)) + " secondes for one try")
   centroidId = eStep(arr, centroid, distance)
