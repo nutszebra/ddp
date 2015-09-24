@@ -166,8 +166,6 @@ def geodesicDistanceOnSPD(x, y):
     F = np.dot(np.dot(invsq, y), invsq)
     return np.linalg.norm(logm(F))
   else:
-    x = infToSmallNum(x)
-    y = infToSmallNum(y)
     sq = x**0.5
     invsq = 1.0 / sq
     F = invsq * y * invsq
@@ -180,8 +178,6 @@ def derivativeSquareOfGeodesicOnSPD(x,y):
     F = np.dot(np.dot(invsq, y), invsq)
     return 2*np.dot(np.dot(sq,logm(F),sq))
   else:
-    x = infToSmallNum(x)
-    y = infToSmallNum(y)
     sq = x**0.5
     invsq = 1.0 / sq
     F = invsq * y * invsq
@@ -197,8 +193,6 @@ def calcMeanOnSPD(p, q):
     F = sqrtm(np.dot(np.dot(sq, q), sq))
     return np.dot(np.dot(invsq,F),invsq)
   else:
-    p = infToSmallNum(p)
-    q = infToSmallNum(q)
     sq = p**0.5
     invsq = 1.0 / sq
     F = (sq * q * sq) **0.5
@@ -214,7 +208,7 @@ def mStepGeodesicOnSPD(vec, centroidId, k):
       q[i[1]] = q[i[1]] + vec[i[0]]
   else:
     for i in enumerate(centroidId):
-      p[i[1]] = p[i[1]] + 1.0 / infToSmallNum(vec[i[0]])
+      p[i[1]] = p[i[1]] + 1.0 / vec[i[0]]
       q[i[1]] = q[i[1]] + vec[i[0]]
   for i in xrange(len(p)):
     answer[i] = calcMeanOnSPD(p[i],q[i])
@@ -242,15 +236,16 @@ def initRandomly(arr, k):
   return random.sample(xrange(len(arr)),k)
 
 def kmeansForManifold(arr, k, distance, calcCenter, iteration=10):
+  arr = infToSmallNum(arr)
   centroid = arr[initRandomly(arr,k)]
   for i in xrange(iteration):
     timeMemory = time()
-    print("try: " + str(i))
+    print("try: " + str(i+1))
     etimeMemory = time()
     centroidId = eStep(arr, centroid, distance)
     print('It took ' + str(int(time() - etimeMemory)) + " secondes for eStep")
     mtimeMemory = time()
-    centroid = mStep(arr, centroidId, calcCenter, k)
+    centroid = infToSmallNum(mStep(arr, centroidId, calcCenter, k))
     print('It took ' + str(int(time() - mtimeMemory)) + " secondes for mStep")
     print('It took ' + str(int(time() - timeMemory)) + " secondes for one try")
   centroidId = eStep(arr, centroid, distance)
