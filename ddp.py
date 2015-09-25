@@ -148,5 +148,5 @@ elif args.model =="googlenet":
   answer = googlenetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
 elif args.model =="illust2vec":
   if args.layer == "default":
-    args.layer = "relu6_3"
+    args.layer = "conv5_1"
   answer = illust2vecNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 

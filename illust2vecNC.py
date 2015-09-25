@@ -53,7 +53,7 @@ from chainer.functions import caffe
   (u'encode2', [u'encode1neuron'], [u'encode2'])]
 """
 
-def getNeuralCode(directory, layer="relu6_3", gpu=-1):
+def getNeuralCode(directory, layer="conv5_1", gpu=-1):
 
   model = "illust2vec_ver200.caffemodel"
   #use illust2vec_ver200
