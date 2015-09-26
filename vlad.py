@@ -73,15 +73,12 @@ def intraVlad(dic):
 def rawVlad(dic, k, structure=(14*14,512), numberToTry=20, how="scipy", threshold=1.0e-05):
   keys = []
   newDic = {}
-  flag = False
+  dicForkmeans = []
   for key in dic:
     newDic[key] = unblockshaped(dic[key].T, structure[0], structure[1])
-    if flag == True:
-      dicForkmeans = np.vstack((dicForkmeans,newDic[key]))
-    else:
-      dicForkmeans = np.array(newDic[key])
-      flag = True
+    dicForkmeans = list(dicForkmeans) + list(newDic[key])
     keys.append(key)
+  dicForkmeans = np.array(dicForkmeans)
   print("k: " + str(k))
   print("number of pictures: " + str(len(dic)))
   print("vector structure for each picture: " + str(structure))
