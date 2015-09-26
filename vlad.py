@@ -57,9 +57,9 @@ def intraVlad(dic):
     tmp = []
     for arr in dic[key]:
       if np.linalg.norm(arr)==0.0:
-        tmp = list(tmp) + list(arr)
+        tmp.append(arr)
       else:
-        tmp = list(tmp) + list(arr/np.linalg.norm(arr))
+        tmp.append(arr/np.linalg.norm(arr))
     answer[key] = np.array(tmp)
   return answer
   
