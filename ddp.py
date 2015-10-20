@@ -158,6 +158,7 @@ def detectDuplicatedPic(answer, threshold):
                 pic.append(key)
           if not flag: 
             pics.append([key,keykey])
+  return pics
 
 #select alexnet or googlenet
 print(args.image)
