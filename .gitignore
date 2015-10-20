@@ -65,3 +65,10 @@ illust2vec_image_mean.npy
 
 #test picture
 test*
+unsplash*
+
+#swp file
+*.swp
+
+#npy file
+*.npy
