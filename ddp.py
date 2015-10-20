@@ -20,7 +20,7 @@ import vlad
 
 parser = argparse.ArgumentParser(
     description='detect duplicate pictures')
-parser.add_argument('--model', default = "alexnet", help='select model')
+parser.add_argument('--model', default = "googlenet", help='select model')
 parser.add_argument('--gpu',  default=-1, help='The argument is number of gpu. -1 means cpu')
 parser.add_argument('--layer', default="default", help='layer to generate neural code')
 parser.add_argument('image', nargs="*",  help='Path to a folder that contains image file')
@@ -138,6 +138,7 @@ def toRowVector(vec):
   return vec.reshape(rowDim)
 
 def detectDuplicatedPic(answer, threshold):
+  print("calculating distance...")
   pics = []
   for key in answer:
     for keykey in answer:
@@ -158,6 +159,20 @@ def detectDuplicatedPic(answer, threshold):
                 pic.append(key)
           if not flag: 
             pics.append([key,keykey])
+  print("done!")
+  return pics
+
+def searchNearPic(key, threshold, answer):
+  print("calculating distance...")
+  pics = {}
+  for keykey in answer:
+    if key == keykey:
+      pass
+    else:
+      distance = answer[key].dot(answer[keykey])/(np.linalg.norm(answer[key])*np.linalg.norm(answer[keykey]))
+      if distance >= threshold:
+        pics[keykey] = distance
+  print("done!")
   return pics
 
 #select alexnet or googlenet
@@ -166,7 +181,7 @@ if args.model =="alexnet":
   if args.layer == "default":
     args.layer = "fc6"
   answer = alexnetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
-  dup = detectDuplicatedPic(answer, 0.9)
+  dup = detectDuplicatedPic(answer, 0.99)
 elif args.model =="googlenet":
   if args.layer == "default":
     args.layer = "inception_4a/output"
@@ -177,6 +192,8 @@ elif args.model =="googlenet":
   for key in ivl:
     feature[key] = toRowVector(ivl[key])
     feature[key] = feature[key] / np.linalg.norm(feature[key])
+  dup = detectDuplicatedPic(feature, 0.9)
+  print(dup)
 elif args.model =="illust2vec":
   if args.layer == "default":
     args.layer = "conv5_1"
