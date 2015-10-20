@@ -16,6 +16,7 @@ from chainer.functions import caffe
 import alexnetNC
 import googlenetNC
 import illust2vecNC
+import vlad
 
 parser = argparse.ArgumentParser(
     description='detect duplicate pictures')
@@ -146,6 +147,12 @@ elif args.model =="googlenet":
   if args.layer == "default":
     args.layer = "inception_4a/output"
   answer = googlenetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
+  vl=vlad.rawVlad(answer,100)
+  ivl=vlad.intraVlad(vl)
+  feature = {}
+  for key in ivl:
+    feature[key] = toRowVector(ivl[key])
+    feature[key] = feature[key] / np.linalg.norm(feature[key])
 elif args.model =="illust2vec":
   if args.layer == "default":
     args.layer = "conv5_1"
