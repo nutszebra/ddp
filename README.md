@@ -13,7 +13,10 @@ Recently, outputs from a layer in a deep network are studied and those outputs, 
     run download_model.py googlenet  
     run ddp.py directory1 directory2 directory3  
 
-You can give some directories that contain pictures.  
+You can give some directories that contain pictures. Duplicated pictures are stored in dup variable:
+
+    dup
+    
 Neural code of each pictures is stored into feature. feature is dictionary type, thus you can check neural code like this:
 
     feature["directory1/a.jpg"]
