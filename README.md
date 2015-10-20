@@ -6,12 +6,21 @@ Recently, outputs from a layer in a deep network are studied and those outputs, 
 [1] studied neural code of googlenet and oxfordnet. In short, [1] utilized outputs from a convolutional layer and applyed intra-VLAD [2].
 
 # How to use
-python download_model.py googlenet  
-python ddp.py directory1 directory2 directory3  
 
-you can take any numer of directories that contain pictures.
+    ipython
+    run download_model.py googlenet  
+    run ddp.py directory1 directory2 directory3  
 
+You can give some directories that contain pictures.  
+Neural code of each pictures is stored into feature. feature is dictionary type, thus you can check neural code like this:
 
+    feature["directory1/a.jpg"]
+
+There is a method to search near pictures. I search for near pictures of directory1/a.jpg:
+
+    searchNearPic("directory1/a.jpg", 0.5, feature)
+
+Second argument is threshold of cosine distance.
 
 # References
 [1] Exploiting Local Features from Deep Networks for Image Retrieval  
