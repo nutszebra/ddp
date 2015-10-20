@@ -7,6 +7,8 @@ Recently, outputs from a layer in a deep network are studied and those outputs, 
 
 # How to use
 
+    git clone https://github.com/nutszebra/ddp.git
+    cd ddp
     ipython
     run download_model.py googlenet  
     run ddp.py directory1 directory2 directory3  
