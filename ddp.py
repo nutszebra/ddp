@@ -137,12 +137,35 @@ def toRowVector(vec):
     rowDim = rowDim * d
   return vec.reshape(rowDim)
 
+def detectDuplicatedPic(answer, threshold):
+  pics = []
+  for key in answer:
+    for keykey in answer:
+      if key == keykey:
+        pass
+      else:
+        distance = answer[key].dot(answer[keykey])/(np.linalg.norm(answer[key])*np.linalg.norm(answer[keykey]))
+        flag = False
+        if distance >= threshold:
+          for pic in pics:
+            if key in pic:
+              flag = True
+              if not keykey in pic:
+                pic.append(keykey)
+            elif keykey in pic:
+              flag = True
+              if not key in pic:
+                pic.append(key)
+          if not flag: 
+            pics.append([key,keykey])
+
 #select alexnet or googlenet
 print(args.image)
 if args.model =="alexnet":
   if args.layer == "default":
     args.layer = "fc6"
   answer = alexnetNC.getNeuralCode(args.image, layer=args.layer, gpu=args.gpu) 
+  dup = detectDuplicatedPic(answer, 0.9)
 elif args.model =="googlenet":
   if args.layer == "default":
     args.layer = "inception_4a/output"
