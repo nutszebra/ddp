@@ -8,8 +8,8 @@ def overwrite(sen):
 
 def bar(a, b):
   num = int(float(a)/b*100)
-  numSharp = num / 5
-  numSpace = 20 - numSharp
+  numSharp = int(num / 5)
+  numSpace = int(20 - numSharp)
   if num < 10:
     return " " + str(num) + "%: " +  "[" + "#" * numSharp + " " * numSpace + "]"
   else:
