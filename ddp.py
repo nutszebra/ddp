@@ -23,6 +23,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('--model', default = "googlenet", help='select model')
 parser.add_argument('--gpu',  default=-1, help='The argument is number of gpu. -1 means cpu')
 parser.add_argument('--layer', default="default", help='layer to generate neural code')
+parser.add_argument('--number', default=100, help='the number to execute k-means')
 parser.add_argument('image', nargs="*",  help='Path to a folder that contains image file')
 args = parser.parse_args()
 
@@ -192,7 +193,7 @@ elif args.model =="googlenet":
   for key in ivl:
     feature[key] = toRowVector(ivl[key])
     feature[key] = feature[key] / np.linalg.norm(feature[key])
-  dup = detectDuplicatedPic(feature, 0.9)
+  dup = detectDuplicatedPic(feature, 0.9, numberToTry=args.number)
   print(dup)
 elif args.model =="illust2vec":
   if args.layer == "default":
