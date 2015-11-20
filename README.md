@@ -1,5 +1,5 @@
 # Purpose
-This program detects duplicated pictures by using a neural code from a deep network
+This program detects duplicated pictures by using a neural code from a deep network and gives a representation vector to each picture.
 
 # Research about image retrieval
 Recently, outputs from a layer in a deep network are studied and those outputs, neural code, were found to be a good representaion of pictures.
@@ -17,11 +17,11 @@ You can give some directories that contain pictures. Duplicated pictures are sto
 
     dup
     
-Neural code of each pictures is stored into feature. feature is dictionary type, thus you can check neural code like this:
+Neural code of each pictures is stored into feature variable and you can check neural code like this:
 
     feature["directory1/a.jpg"]
 
-There is a method to search near pictures. I search for near pictures of directory1/a.jpg:
+There is a method to search pictures near the picture. I search for pictures near directory1/a.jpg:
 
     searchNearPic("directory1/a.jpg", 0.5, feature)
 
